@@ -1,13 +1,19 @@
 import app from './app';
 import { createServer } from 'http';
+import io from 'socket.io';
 
-var port = process.env.PORT || '8080';
+const port = process.env.PORT || '8080';
 
-var server = createServer(app);
+const httpServer = createServer(app);
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', () => console.log('Listening on ' + port));
+const socketServer = io(httpServer);
+
+socketServer.on('connection', (socket) => {
+  console.log('user connected');
+})
+
+httpServer.listen(port, () => console.log('listening on ' + port));
+httpServer.on('error', onError);
 
 /**
  * Event listener for HTTP server "error" event.

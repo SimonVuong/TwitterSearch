@@ -3,6 +3,7 @@ import path from 'path';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import io from 'socket.io';
 
 const app = express();
 
