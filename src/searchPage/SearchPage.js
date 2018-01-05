@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Button } from 'semantic-ui-react'
+import { Grid, Input } from 'semantic-ui-react'
 
 class SearchPage extends Component {
   render() {
     return (
-      <div>
-        <Input action={{ icon: 'search' }} placeholder='Search...' />
-      </div>
+      <Grid centered padded='vertically'>
+        <Grid.Column width={14}>
+          <Input fluid action={{icon: 'search', color:'primary'}} placeholder='Search tweets...' />
+        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column textAlign='center'>
+            <p>placeholder</p>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }

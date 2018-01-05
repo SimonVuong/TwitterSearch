@@ -12,8 +12,8 @@ npm serve
 
 
 features
-
-sticky search'
+background picture, with tweets in a gray box
+sticky search
 
 
 shortcuts
