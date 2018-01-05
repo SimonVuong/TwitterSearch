@@ -3,7 +3,7 @@ import path from 'path';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import io from 'socket.io';
+import createTwitterApi from './apis/twitter';
 
 const app = express();
 
@@ -11,13 +11,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(favicon(path.join(__dirname, '..', 'build', 'favicon.ico')));
+createTwitterApi(app);
 
-app.use(express.static(path.join(__dirname, '..', 'build')));
+const env = process.env.NODE_ENV || 'development';
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-});
+if (env !== 'development') {
+  app.use(favicon(path.join(__dirname, '..', 'client', 'build', 'favicon.ico')));
+  app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+  app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html')));
+}
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

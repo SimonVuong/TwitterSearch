@@ -1,0 +1,50 @@
+{
+  "name": "twittersearch",
+  "version": "0.0.0",
+  "scripts": {
+    "start-client": "react-scripts start",
+    "watch-semantic": "gulp --gulpfile src/semantic/gulpfile.js watch",
+    "start": "run-p watch-semantic start-client",
+    "build-css": "gulp --gulpfile src/semantic/gulpfile.js build-css",
+    "build-assets": "gulp --gulpfile src/semantic/gulpfile.js build-assets",
+    "prebuild": "run-s build-css build-assets",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.5.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "semantic-ui": "^2.2.13",
+    "semantic-ui-react": "^0.77.1",
+    "socket.io-client": "^2.0.4"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080",
+      "ws": true
+    },
+    "/socket.io": {
+      "target": "ws://localhost:8080",
+      "ws": true
+    }
+  }
+}

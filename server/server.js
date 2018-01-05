@@ -6,9 +6,9 @@ const port = process.env.PORT || '8080';
 
 const httpServer = createServer(app);
 
-const socketServer = io(httpServer);
+export const socket = io(httpServer);
 
-socketServer.on('connection', (socket) => {
+socket.on('connection', (socket) => {
   console.log('user connected');
 })
 
