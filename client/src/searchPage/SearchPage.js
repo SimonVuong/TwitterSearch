@@ -10,15 +10,19 @@ class SearchPage extends Component {
 
   search = async () => {
     try {
+      const res = await fetch('/api/twitter', {
+        method: 'post', 
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify({track: this.state.search})
+      });
+      
+      console.log(res.ok);
 
-      const res = await fetch('/api/twitter', {method: 'post', body: this.state.search});
       if (!res.ok) throw new Error(res);
-      console.log(await res.json());
 
       // this.props.socket.on('newTweet', tweet => {
       //   console.log(tweet);
       // });
-
 
       // this.props.socket.on('destroy', () => {
       //   console.log('destroyed');
