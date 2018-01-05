@@ -13,4 +13,8 @@ npm serve
 
 features
 
-sticky search
+sticky search'
+
+
+shortcuts
+npm run serve = babel-node but fast and easy for poc

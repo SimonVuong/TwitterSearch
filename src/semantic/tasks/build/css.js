@@ -81,7 +81,7 @@ module.exports = function(callback) {
 
   // two concurrent streams from same source to concat release
   uncompressedStream = stream.pipe(clone());
-  compressedStream   = stream.pipe(clone());
+  // compressedStream   = stream.pipe(clone()); editted by simon so gulp build-css succeeds
 
   // uncompressed component css
   uncompressedStream

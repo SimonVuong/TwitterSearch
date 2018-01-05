@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
+import SearchPage from './searchPage/SearchPage';
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <p>simon</p>
-      </Provider>
-    );
-  }
-}
-
-export default App;
+export default () => (
+  <Provider store={store}>
+    <SearchPage />
+  </Provider>
+)
