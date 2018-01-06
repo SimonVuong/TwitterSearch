@@ -8,6 +8,8 @@ export default ({tweets}) => (
   </List>
 )
 
+//defined in the same file as TweetsList because it's only used by TweetsList. defined as a separate component rather
+//than inside TweetsList because it does not depend on on any TweetsList state
 const Tweet = ({timestamp, text, username, avatar, location}) => (
   <List.Item>
     <List.Content>

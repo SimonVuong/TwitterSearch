@@ -27,7 +27,8 @@ const streamTweets = async (terms, client) => {
       });
     });
 
-    client.on('stopTweets', () => tweatStream.destroy());
+    client.on('stopTweets', tweatStream.destroy);
+    client.on('disconnect', tweatStream.destroy);
 
     tweatStream.on('error', error => {
       console.error('twitter stream error', error);
