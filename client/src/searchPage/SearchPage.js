@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Input, Button, Icon } from 'semantic-ui-react';
+import Header from '../general/components/Header';
 import TweetsList from './TweetsList';
 
 class SearchPage extends Component {
@@ -11,10 +12,19 @@ class SearchPage extends Component {
     tweets: []
   };
 
-  search = () => {
-    this.props.socket.emit('getTweets', this.state.search);
-    this.setState({isStreaming: true});
+  componentDidMount () {
     this.props.socket.on('newTweet', tweet => this.setState({tweets: [tweet, ...this.state.tweets]}));
+  }
+
+  search = () => {
+    const { socket } = this.props
+
+    this.state.isStreaming ? socket.emit('stopTweets') : this.setState({isStreaming: true});
+
+    //note: multililne otherwise it goes over 120 chars
+    this.state.tweets.length === 0 
+    ? socket.emit('getTweets', this.state.search) 
+    : this.setState({tweets: []}, () => socket.emit('getTweets', this.state.search));
   }
 
   stop = () => {
@@ -22,26 +32,28 @@ class SearchPage extends Component {
     this.setState({isStreaming: false});
   }
 
-  //defined within SearchPage component because it needs SearchPage state
-  renderStopButton = () => (
-    this.state.isStreaming ? 
-    <Button negative icon labelPosition='left'
-    onClick={this.stop} style={{'margin-right': '1em'}}>
-        <Icon name='stop' />
-        Stop feed
-    </Button> : null
+  //note: defined within SearchPage component because it needs SearchPage state
+  renderStopButton = () => (    
+    this.state.isStreaming ?
+    <Button negative icon labelPosition='left' onClick={this.stop} style={{'marginRight': '1em'}}>
+      <Icon name='stop' />
+      Stop feed
+    </Button>
+    : null
   )
 
-  //todo handle scenario when i click saerch twice
   render() {
     return (
       <Grid container padded='vertically' columns={1}>
         <Grid.Column>
-          <Input fluid action placeholder='Search tweets...'
-          value={this.state.search} onChange={({target: {value: search}}) => this.setState({search})}>
+          <Header text='Search Live Tweets' icon='twitter' />
+        </Grid.Column>
+        <Grid.Column>
+          <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
+          onChange={({target: {value: search}}) => this.setState({search})}>
             {this.renderStopButton()}
             <input />
-            <Button primary icon='search' onClick={this.search}/>
+            <Button primary size='massive' icon='search' onClick={this.search}/>
           </Input>
         </Grid.Column>
         <Grid.Column>

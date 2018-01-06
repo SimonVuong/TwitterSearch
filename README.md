@@ -8,6 +8,9 @@ must have semantic folder inside source instead of client toplevel otherwise, re
 by cra
 
 
+i left a lot of comments explaining my thought processes that may not be so obvious. these are rules and patterns that
+i like to follow and incorporate in all my projects. i am flexible when working with a team however
+
 run locally
 
 npm start 
