@@ -9,7 +9,7 @@ const twitter = new TwitterApi({
 });
 
 export const enableTwitterStream = socket => {
-  socket.on('connection', client => client.on('getTweets', (terms) => streamTweets(terms, client)));
+  socket.on('connection', client => client.on('getTweets', terms => streamTweets(terms, client)));
 }
 
 const streamTweets = async (terms, client) => {
@@ -17,13 +17,17 @@ const streamTweets = async (terms, client) => {
     const tweatStream = await twitter.stream('statuses/filter', {track: terms});
 
     tweatStream.on('data', tweet => {
-      console.log(tweet.text);
-      client.emit('newTweet', tweet.text);
+      client.emit('newTweet', {
+        id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
+        timestamp: tweet.timestamp,
+        text: tweet.text,
+        username: tweet.user.screen_name,
+        avatar: tweet.user.profile_image_url,
+        // location: tweet.place.full_name
+      });
     });
 
-    client.on('stopTweets', () => {
-      tweatStream.destroy();
-    });
+    client.on('stopTweets', () => tweatStream.destroy());
 
     tweatStream.on('error', error => {
       console.error('twitter stream error', error);
