@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Grid, Input, Button, Icon } from 'semantic-ui-react';
 import Header from '../general/components/Header';
 import TweetsList from './TweetsList';
+import './searchPage.css';
 
 class SearchPage extends Component {
 
@@ -33,10 +34,11 @@ class SearchPage extends Component {
   }
 
   //note: defined within SearchPage component because it needs SearchPage state
-  renderStopButton = () => (    
+  renderStopButton = () => (
+    //must use className to add styles here because we need to use !important and inlineStyles dont support !important
     this.state.isStreaming ?
-    <Button negative icon labelPosition='left' onClick={this.stop} style={{'marginRight': '1em'}}>
-      <Icon name='stop' />
+    <Button negative icon size='big' labelPosition='left' className='stopButton' onClick={this.stop}>
+      <Icon name='stop' size='large' style={{width: '1.5em'}}/>
       Stop feed
     </Button>
     : null
