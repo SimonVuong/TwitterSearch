@@ -1,5 +1,4 @@
 import TwitterApi from 'twitter';
-import { socket } from '../server';
 
 //todo: in real app, use env variables. keys hardcoded now for ease.
 const twitter = new TwitterApi({
@@ -9,28 +8,35 @@ const twitter = new TwitterApi({
   access_token_secret: 'KRc3oQbzzJCAr9YE4Qzh4BcUjzPgEtpGmsYKQ2NLNCqLl'
 });
 
-export default function createTwitterApi (app) {
-  //configured as post to handle more request params. twitter rejects GET for excessive url length from too many params
-  app.post('/api/twitter', async (req, res, next) => {
-    try {
-      const stream = await twitter.stream('statuses/filter', {track: req.body.track});
+export const enableTwitterStream = socket => {
+  socket.on('connection', client => client.on('getTweets', (terms) => streamTweets(terms, client)));
+}
 
-      stream.on('error', error => {
-        console.log('got twitter error');
-        console.log(error);
-      });
+const streamTweets = async (terms, client) => {
+  try {
+    const tweatStream = await twitter.stream('statuses/filter', {track: terms});
 
-      stream.on('data', tweet => {
-        console.log(tweet);
-        // socket.emit('newTweet', JSON.parse(tweet));
-      });
-  
-      stream.on('end', () => io.emit('destroy'));
-      
-      res.sendStatus(200);
-    } catch (e) {
-      console.log('regular error');;
-      res.sendStatus(500)
-    }
-  });
+    tweatStream.on('data', tweet => {
+      console.log(tweet.text);
+      client.emit('newTweet', tweet.text);
+    });
+
+    client.on('stopTweets', () => {
+      tweatStream.destroy();
+    });
+
+    tweatStream.on('error', error => {
+      console.error('twitter stream error', error);
+      //todo send error back to client
+    });
+
+    tweatStream.on('end', () => {
+      console.log('twitter stream ended');
+      //send error back to client
+    });
+
+  } catch (e) {
+    //todo send error back to client
+    console.error('twitter connection error');
+  }
 }

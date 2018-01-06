@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Input } from 'semantic-ui-react'
-
+import { Grid, Input, Button } from 'semantic-ui-react'
 class SearchPage extends Component {
 
   state = {
-    search: '' //todo default to url path
+    search: '', //todo default to url path
+    tweets: []
   };
 
-  search = async () => {
-    try {
-      const res = await fetch('/api/twitter', {
-        method: 'post', 
-        headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({track: this.state.search})
-      });
-      
-      console.log(res.ok);
-
-      if (!res.ok) throw new Error(res);
-
-      // this.props.socket.on('newTweet', tweet => {
-      //   console.log(tweet);
-      // });
-
-      // this.props.socket.on('destroy', () => {
-      //   console.log('destroyed');
-      // });
-
-    } catch(e) {
-      console.error(e);
-    }
+  search = () => {
+    this.props.socket.emit('getTweets', this.state.search);
+    this.props.socket.on('newTweet', tweet => {
+      const tweets = this.state.tweets;
+      tweets.unshift(tweet);
+      this.setState({tweets});
+    });
   }
 
   render() {
@@ -41,8 +25,11 @@ class SearchPage extends Component {
           value={this.state.search} onChange={({target: {value: search}}) => this.setState({search})}/>
         </Grid.Column>
         <Grid.Row>
+          <Button onClick={this.props.socket.emit('stopTweets')}>Stop</Button>
+        </Grid.Row>
+        <Grid.Row>
           <Grid.Column textAlign='center'>
-            <p>placeholder2</p>
+            {this.state.tweets.map((tweet, index) => <div key={index}>{tweet}</div>)}
           </Grid.Column>
         </Grid.Row>
       </Grid>
