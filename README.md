@@ -33,22 +33,6 @@ makesure i can search with enter button
 shortcuts
 npm run serve = babel-node but fast and easy for poc
 
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:8080",
-      "ws": true
-    }
-  },
 
 
-    "serve": "babel-node --presets es2015,stage-0 -- server/server.js",
-    "start-server": "nodemon server/server.js --exec babel-node --presets es2015,stage-0",
-    "start-client": "react-scripts start",
-    "watch-semantic": "gulp --gulpfile src/semantic/gulpfile.js watch",
-    "start": "run-p start-server start-client watch-semantic",
-    "build-css": "gulp --gulpfile src/semantic/gulpfile.js build-css",
-    "build-assets": "gulp --gulpfile src/semantic/gulpfile.js build-assets",
-    "prebuild": "run-s build-css build-assets",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+<a href="https://www.freevector.com/singing-twitter-bird-vector">FreeVector.com</a>

@@ -1,11 +1,9 @@
 import React from 'react';
-import { Header, Icon } from 'semantic-ui-react'
+import { Header, Image } from 'semantic-ui-react'
 
-export default ({text, icon}) => (
+//note: i put components used across mulitple pages in this folder across similar files
+export default ({text, image}) => (
   <Header as='h1' textAlign='center'>
-    <Icon name={icon} />
-    <Header.Content>
-      {text}
-    </Header.Content>
+    <Image src={image} />{' '}{text}
   </Header>
 )

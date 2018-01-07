@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Input, Button, Icon, Sticky} from 'semantic-ui-react';
+import { Grid, Input, Image, Button, Icon, Sticky} from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 import queryString from 'query-string';
 import Header from '../general/components/Header';
@@ -64,14 +64,14 @@ class SearchPage extends Component {
       backgroundSize: 'cover',
       backgroundAttachment: 'fixed'
     }
-
+    
     return (
       <div ref={this.setStickyRef} style={style}>
         <Grid container padded='vertically' columns={1} style={{backgroundColor: 'white'}}>
-          <Grid.Column>
-            <Header text='Search Live Tweets' icon='twitter' />
+          <Grid.Column style={{paddingBottom: 0}}>
+            <Header text='Search Live Tweets' image='/blueBirdCrop.png' />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column style={{paddingTop: 0}}>
             <Sticky context={this.state.stickyRef} className='sticky'>
               <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
               onChange={({target: {value: search}}) => this.setState({search})}>

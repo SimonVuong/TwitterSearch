@@ -5,7 +5,7 @@
 }
 
 /* necessary to give the sticky div styles. otherwise, we can't target the sticky */
-.sticky > div {
+.sticky > div:nth-child(2) {
   z-index: 1; /* needed to place sticky above the tweets*/
   padding-top: 2em;
   padding-bottom: 1em;
