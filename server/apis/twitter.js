@@ -9,12 +9,14 @@ const twitter = new TwitterApi({
 });
 
 export const enableTwitterStream = socket => {
-  socket.on('connection', client => client.on('getTweets', terms => streamTweets(terms, client)));
+  socket.on('connection', client => {
+    client.on('getTweets', terms => streamTweets(terms, client))
+  });
 }
 
 const streamTweets = async (terms, client) => {
   try {
-    const tweatStream = await twitter.stream('statuses/filter', {track: terms});
+    const tweatStream = twitter.stream('statuses/filter', {track: terms});
     tweatStream.on('data', tweet => {
       console.log(tweet.id_str);
       //todo if we stream "love"  the socket can't handle the traffic....

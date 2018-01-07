@@ -11,6 +11,10 @@ class SearchBar extends Component {
     if (this.props.onSearch) this.props.onSearch(this.state.query)
   }
 
+  componentWillReceiveProps({query: nextQuery}) { 
+    if (nextQuery !== this.props.query) this.setState({query: nextQuery}) 
+  }
+
   render () {
     return (
       <Form onSubmit={this.onSubmit}>

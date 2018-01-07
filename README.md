@@ -46,3 +46,6 @@ at which case i do use class names. i choose css for these kinds of style isntea
 
 i reserve app.css for such styles and leave semantic for theming and semantic specific
 overrides.
+
+coding style: i do my best to be consistent. but at the end of the day, i write the sttyle i choose to be most readable.
+again im flexible in a team

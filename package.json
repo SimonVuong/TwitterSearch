@@ -30,6 +30,7 @@
     "express": "~4.15.5",
     "gulp": "^3.9.1",
     "morgan": "~1.9.0",
+    "node-tweet-stream": "^2.0.3",
     "npm-run-all": "^4.1.2",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4",

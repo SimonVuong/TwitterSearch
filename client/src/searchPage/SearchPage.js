@@ -17,12 +17,21 @@ class SearchPage extends Component {
 
   componentDidMount () {
     this.props.socket.on('newTweet', tweet => this.setState({tweets: [tweet, ...this.state.tweets]}));
-    this.search(this.getRouteQuery());
+    this.search(this.getRouteQuery(this.props.location));
   }
 
   componentWillUnmount () { this.props.socket.emit('stopTweets') }
 
-  getRouteQuery = () => queryString.parse(this.props.location.search).query;
+  componentWillReceiveProps({location: nextLocation}) {
+    if (this.getRouteQuery(nextLocation) !== this.getRouteQuery(this.props.location)) {
+      this.search(this.getRouteQuery(nextLocation));
+    }
+  }
+
+  getRouteQuery = location => queryString.parse(location.search).query;
+
+  //must use defined function property. inline function in render causes infinte loops for some reason
+  setStickyRef = stickyRef => this.setState({stickyRef})
 
   search = (query) => {
     if (!query) return;
@@ -52,9 +61,6 @@ class SearchPage extends Component {
     : null
   )
 
-  //must use defined function property. inline function in render causes infinte loops for some reason
-  setStickyRef = stickyRef => this.setState({stickyRef})
-
   render() {
     return (
       <div ref={this.setStickyRef} className='cloudsBackground' style={{backgroundAttachment: 'fixed'}}>
@@ -66,7 +72,7 @@ class SearchPage extends Component {
           </Grid.Column>
           <Grid.Column style={{paddingTop: 0}}>
             <Sticky context={this.state.stickyRef} className='sticky'>
-              <SearchBar inputLeft={this.renderStopButton()} onSearch={this.search} query={this.getRouteQuery()}/>
+              <SearchBar inputLeft={this.renderStopButton()} onSearch={this.search} query={this.getRouteQuery(this.props.location)}/>
             </Sticky>
           </Grid.Column>
           <Grid.Column>
