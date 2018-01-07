@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Input, Button, Icon } from 'semantic-ui-react';
+import { Container, Grid, Input, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 import queryString from 'query-string';
 import Header from '../general/components/Header';
@@ -18,7 +18,11 @@ class SearchPage extends Component {
   componentDidMount () {
     this.props.socket.on('newTweet', tweet => this.setState({tweets: [tweet, ...this.state.tweets]}));
     const { search } = queryString.parse(this.props.location.search);
-    if (search) this.setState({search}, this.search);
+
+    //todo bring this back before submission
+    // if (search) this.setState({search}, this.search);
+
+    if (search) this.setState({search});
   }
 
   search = () => {
@@ -51,8 +55,20 @@ class SearchPage extends Component {
   //todo give background credit <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com</a>
   render() {
     return (
-      <div style={{height: 'inherit', backgroundImage: 'url("/clouds.svg")', backgroundSize: 'cover'}}>
-        <Grid container padded='vertically' columns={1} style={{backgroundColor: 'white', height: 'inherit'}}>
+      <div style={{minHeight: '100vh', backgroundImage: 'url("/clouds.svg")', backgroundSize: 'cover', backgroundAttachment: 'fixed'}}>
+        {/* <Container text style={{backgroundColor: 'white', height: 'inherit'}}>
+          <Header text='Search Live Tweets' icon='twitter' />
+          <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
+            onChange={({target: {value: search}}) => this.setState({search})}>
+              {this.renderStopButton()}
+              <input />
+              <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
+                <Button primary size='massive' icon='search' onClick={this.search}/>
+              </Link>       
+            </Input>
+          <TweetsList tweets={this.state.tweets}/>
+        </Container> */}
+        <Grid container padded='vertically' columns={1} style={{backgroundColor: 'white'}}>
           <Grid.Column>
             <Header text='Search Live Tweets' icon='twitter' />
           </Grid.Column>
