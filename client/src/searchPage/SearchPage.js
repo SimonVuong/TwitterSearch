@@ -13,11 +13,14 @@ class SearchPage extends Component {
     isStreaming: false,
     tweets: [],
   };
+  //todo support back. if searching 1 then 2 then back to 1, it doesnt update
 
   componentDidMount () {
     this.props.socket.on('newTweet', tweet => this.setState({tweets: [tweet, ...this.state.tweets]}));
     this.search(this.getRouteQuery());
   }
+
+  componentWillUnmount () { this.props.socket.emit('stopTweets') }
 
   getRouteQuery = () => queryString.parse(this.props.location.search).query;
 
@@ -42,7 +45,7 @@ class SearchPage extends Component {
   renderStopButton = () => (
     //must use className to add styles here because we need to use !important and inlineStyles dont support !important
     this.state.isStreaming ?
-    <Button negative icon size='big' labelPosition='left' className='stopButton' onClick={this.stop}>
+    <Button negative icon type='button' size='big' labelPosition='left' className='stopButton' onClick={this.stop}>
       <Icon name='stop' size='large' style={{width: '1.5em'}}/>
       Stop feed
     </Button>

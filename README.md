@@ -26,8 +26,7 @@ npm serve
 
 
 features
-background picture, with tweets in a gray box
-sticky search
+input validatioon
 makesure i can search with enter button
 
 shortcuts
