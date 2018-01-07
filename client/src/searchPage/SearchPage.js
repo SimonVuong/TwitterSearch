@@ -100,11 +100,11 @@ class SearchPage extends Component {
       //marginTop necessary because default is -1rem which causes white space on the bottom of page
       <Grid centered style={{marginTop: 0, ...background}}>
         <Image src='/bigBird.png' style={{position: 'absolute', bottom: 0, left: 0}}/>
-        <Grid.Column width={7} style={{paddingLeft: 0, paddingTop: '10em'}}>
-          <h1 style={{color: 'white', fontSize:'5em'}}>{title}</h1>
+        <Grid.Column mobile={14} tablet={14} computer={10} textAlign='center' style={{paddingLeft: 0, paddingTop: '10em'}}>
+          <h1 style={{fontSize:'5em'}}>{title}</h1>
           {this.renderSearchBar()}
         </Grid.Column>
-        <div style={{position: 'absolute', bottom: 0, right: 0}}>
+        <div style={{position: 'fixed', bottom: 0, right: 0}}>
           <a href="https://www.freevector.com/singing-twitter-bird-vector">FreeVector.com (bird)</a> {' '}
           <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com (clouds)</a>
         </div>
