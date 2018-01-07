@@ -99,6 +99,8 @@ class SearchPage extends Component {
       :
       //marginTop necessary because default is -1rem which causes white space on the bottom of page
       <Grid centered style={{marginTop: 0, ...background}}>
+        {/*note: ideally this image woudl be part of background so it doenst move with window. would use photo editing
+        tool to combine image and bg for a real app*/}
         <Image src='/bigBird.png' style={{position: 'absolute', bottom: 0, left: 0}}/>
         <Grid.Column mobile={14} tablet={14} computer={10} textAlign='center' style={{paddingLeft: 0, paddingTop: '10em'}}>
           <h1 style={{fontSize:'5em'}}>{title}</h1>
