@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Grid, Input, Button, Icon } from 'semantic-ui-react';
+import { Grid, Input, Button, Icon, Sticky} from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 import queryString from 'query-string';
 import Header from '../general/components/Header';
@@ -12,7 +12,8 @@ class SearchPage extends Component {
   state = {
     search: 'food', //todo default to url path
     isStreaming: false,
-    tweets: []
+    tweets: [],
+    stickyRef: null
   };
 
   componentDidMount () {
@@ -52,38 +53,38 @@ class SearchPage extends Component {
     : null
   )
 
+  //must use defined function property. inline function in render causes infinte loops for some reason
+  setStickyRef = stickyRef => this.setState({stickyRef})
+
   //todo give background credit <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com</a>
   render() {
+    const style = {
+      minHeight: '100vh', 
+      backgroundImage: 'url("/clouds.svg")',
+      backgroundSize: 'cover',
+      backgroundAttachment: 'fixed'
+    }
+
     return (
-      <div style={{minHeight: '100vh', backgroundImage: 'url("/clouds.svg")', backgroundSize: 'cover', backgroundAttachment: 'fixed'}}>
-        {/* <Container text style={{backgroundColor: 'white', height: 'inherit'}}>
-          <Header text='Search Live Tweets' icon='twitter' />
-          <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
-            onChange={({target: {value: search}}) => this.setState({search})}>
-              {this.renderStopButton()}
-              <input />
-              <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
-                <Button primary size='massive' icon='search' onClick={this.search}/>
-              </Link>       
-            </Input>
-          <TweetsList tweets={this.state.tweets}/>
-        </Container> */}
+      <div ref={this.setStickyRef} style={style}>
         <Grid container padded='vertically' columns={1} style={{backgroundColor: 'white'}}>
           <Grid.Column>
             <Header text='Search Live Tweets' icon='twitter' />
           </Grid.Column>
           <Grid.Column>
-            <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
-            onChange={({target: {value: search}}) => this.setState({search})}>
-              {this.renderStopButton()}
-              <input />
-              <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
-                <Button primary size='massive' icon='search' onClick={this.search}/>
-              </Link>       
-            </Input>
+            <Sticky context={this.state.stickyRef} className='sticky'>
+              <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
+              onChange={({target: {value: search}}) => this.setState({search})}>
+                {this.renderStopButton()}
+                <input />
+                <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
+                  <Button primary size='massive' icon='search' onClick={this.search}/>
+                </Link>       
+              </Input>
+            </Sticky>
           </Grid.Column>
           <Grid.Column>
-            <TweetsList tweets={this.state.tweets}/>
+            <TweetsList tweets={this.state.tweets}/>              
           </Grid.Column>
         </Grid>
       </div>

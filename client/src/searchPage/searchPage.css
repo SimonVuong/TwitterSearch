@@ -3,3 +3,11 @@
   padding-left: 3em !important;
   padding-right: 1em !important;
 }
+
+/* necessary to give the sticky div styles. otherwise, we can't target the sticky */
+.sticky > div {
+  z-index: 1; /* needed to place sticky above the tweets*/
+  padding-top: 2em;
+  padding-bottom: 1em;
+  background-color: white
+}
