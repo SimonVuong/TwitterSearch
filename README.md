@@ -33,6 +33,8 @@ makesure i can search with enter button
 shortcuts
 npm run serve = babel-node but fast and easy for poc
 
+css variables and settings are set in 
+\client\src\semantic\src\site\globals\site.variables
 
+if you change one while the program is running, it auto recompiles
 
-<a href="https://www.freevector.com/singing-twitter-bird-vector">FreeVector.com</a>

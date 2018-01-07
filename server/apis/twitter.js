@@ -15,8 +15,8 @@ export const enableTwitterStream = socket => {
 const streamTweets = async (terms, client) => {
   try {
     const tweatStream = await twitter.stream('statuses/filter', {track: terms});
-
     tweatStream.on('data', tweet => {
+      console.log(tweet);
       client.emit('newTweet', {
         id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
         timestamp: tweet.timestamp,
@@ -42,6 +42,6 @@ const streamTweets = async (terms, client) => {
 
   } catch (e) {
     //todo send error back to client
-    console.error('twitter connection error');
+    console.error('twitter connection error', e);
   }
 }

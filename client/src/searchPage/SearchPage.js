@@ -70,7 +70,6 @@ class SearchPage extends Component {
   //must use defined function property. inline function in render causes infinte loops for some reason
   setStickyRef = stickyRef => this.setState({stickyRef})
 
-  //todo give background credit <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com</a>
   render() {
     const background = {
       minHeight: '100vh', 
@@ -98,14 +97,17 @@ class SearchPage extends Component {
         </Grid>
       </div>
       :
-      <Grid verticalAlign='middle' style={background}>
-        <Grid.Column width={5} style={{paddingRight: 0}}>
-          <Image src='/bigBird.png'/>
-        </Grid.Column>
-        <Grid.Column width={7} style={{paddingLeft: 0, paddingBottom: '9em'}}>
+      //marginTop necessary because default is -1rem which causes white space on the bottom of page
+      <Grid centered style={{marginTop: 0, ...background}}>
+        <Image src='/bigBird.png' style={{position: 'absolute', bottom: 0, left: 0}}/>
+        <Grid.Column width={7} style={{paddingLeft: 0, paddingTop: '10em'}}>
           <h1 style={{color: 'white', fontSize:'5em'}}>{title}</h1>
           {this.renderSearchBar()}
         </Grid.Column>
+        <div style={{position: 'absolute', bottom: 0, right: 0}}>
+          <a href="https://www.freevector.com/singing-twitter-bird-vector">FreeVector.com (bird)</a> {' '}
+          <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com (clouds)</a>
+        </div>
       </Grid>
     );
   }
