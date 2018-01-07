@@ -49,3 +49,8 @@ overrides.
 
 coding style: i do my best to be consistent. but at the end of the day, i write the sttyle i choose to be most readable.
 again im flexible in a team
+
+
+known errors: dupes. rarely, twitter will send dupe tweets which causes the react list to spit warnings. can be
+fixed by redis on backend but we are focusing on front end for this assignment and rate limiting. avoid
+queries that stream too fast such as "love" or "life"

@@ -8,7 +8,6 @@ class SearchBar extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     this.props.history.push('/search?query=' + this.state.query);
-    if (this.props.onSearch) this.props.onSearch(this.state.query)
   }
 
   componentWillReceiveProps({query: nextQuery}) { 

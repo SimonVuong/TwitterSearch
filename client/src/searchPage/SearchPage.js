@@ -12,15 +12,15 @@ class SearchPage extends Component {
   state = {
     isStreaming: false,
     tweets: [],
+    currQuery: null
   };
-  //todo support back. if searching 1 then 2 then back to 1, it doesnt update
 
   componentDidMount () {
     this.props.socket.on('newTweet', tweet => this.setState({tweets: [tweet, ...this.state.tweets]}));
     this.search(this.getRouteQuery(this.props.location));
   }
 
-  componentWillUnmount () { this.props.socket.emit('stopTweets') }
+  componentWillUnmount () { this.props.socket.emit('stopTweets', this.state.currQuery) }
 
   componentWillReceiveProps({location: nextLocation}) {
     if (this.getRouteQuery(nextLocation) !== this.getRouteQuery(this.props.location)) {
@@ -33,19 +33,22 @@ class SearchPage extends Component {
   //must use defined function property. inline function in render causes infinte loops for some reason
   setStickyRef = stickyRef => this.setState({stickyRef})
 
-  search = (query) => {
-    if (!query) return;
+  search = (newQuery) => {
+    if (!newQuery) return;
     const { socket } = this.props
-    this.state.isStreaming ? socket.emit('stopTweets') : this.setState({isStreaming: true});
+    let newState = {currQuery: newQuery};
+    this.state.isStreaming ? socket.emit('stopTweets', this.state.currQuery) : newState.isStreaming = true;
 
-    //note: multililne otherwise it goes over 120 chars
-    this.state.tweets.length === 0 
-    ? socket.emit('getTweets', query) 
-    : this.setState({tweets: []}, () => socket.emit('getTweets', query));
+    if (this.state.tweets.length === 0) {
+      socket.emit('getTweets', newQuery);
+      this.setState(newState);
+    } else {
+      this.setState({tweets: [], ...newState}, () => socket.emit('getTweets', newQuery));
+    }
   }
 
   stop = () => {
-    this.props.socket.emit('stopTweets');
+    this.props.socket.emit('stopTweets', this.state.currQuery);
     this.setState({isStreaming: false});
   }
 
