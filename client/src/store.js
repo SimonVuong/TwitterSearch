@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
-import rootReducer from './rootReducer';
+import rootReducer from './general/reducers/rootReducer';
 
 const logger = createLogger({
   collapsed: true

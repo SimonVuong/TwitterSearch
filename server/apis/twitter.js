@@ -16,7 +16,7 @@ const streamTweets = async (terms, client) => {
   try {
     const tweatStream = await twitter.stream('statuses/filter', {track: terms});
     tweatStream.on('data', tweet => {
-      console.log(tweet);
+      //todo if we stream "love"  the socket can't handle the traffic....
       client.emit('newTweet', {
         id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
         timestamp: tweet.timestamp,

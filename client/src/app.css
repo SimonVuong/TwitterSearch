@@ -1,0 +1,7 @@
+/* reserved for app specific css. semantic css is reserved for themeing and  */
+
+.cloudsBackground {
+  min-height: 100vh;
+  background-image: url(/clouds.svg);
+  background-size: cover;
+}

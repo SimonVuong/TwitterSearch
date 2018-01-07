@@ -38,3 +38,12 @@ css variables and settings are set in
 
 if you change one while the program is running, it auto recompiles
 
+i prefer inline styles when the style is specific to the component. id ont have to jump to anotiher file, then cross match
+selectors and classnames. i can see eveyrthign there. sometimes though, there are styles that apply to multiple components
+at which case i do use class names. i choose css for these kinds of style isntead of export react style objects because
+
+1) css "are generally more efficient than inline styles" (from https://reactjs.org/docs/faq-styling.html)
+2) i already have to go to a different file anyway so i might as well use className
+
+i reserve app.css for such styles and leave semantic for theming and semantic specific
+overrides.
