@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Input, Image, Button, Icon, Sticky} from 'semantic-ui-react';
+import { Grid, Input, Button, Icon, Sticky, Image} from 'semantic-ui-react';
 import { Link } from 'react-router-dom'
 import queryString from 'query-string';
-import Header from '../general/components/Header';
+import TitleHeader from '../general/components/Header';
 import TweetsList from './TweetsList';
 import './searchPage.css';
 
@@ -13,7 +13,7 @@ class SearchPage extends Component {
     search: 'food', //todo default to url path
     isStreaming: false,
     tweets: [],
-    stickyRef: null
+    hasSearched: false
   };
 
   componentDidMount () {
@@ -27,6 +27,8 @@ class SearchPage extends Component {
   }
 
   search = () => {
+    if (!this.state.hasSearched) this.setState({hasSearched: true});
+
     const { socket } = this.props
 
     this.state.isStreaming ? socket.emit('stopTweets') : this.setState({isStreaming: true});
@@ -42,7 +44,8 @@ class SearchPage extends Component {
     this.setState({isStreaming: false});
   }
 
-  //note: defined within SearchPage component because it needs SearchPage state
+  //note: defined within SearchPage component because it needs SearchPage state. using separate fn instead of ternary
+  //inside renderSearchBar for easier readability. multiline ternaries are difficult to read when surrounded by tags
   renderStopButton = () => (
     //must use className to add styles here because we need to use !important and inlineStyles dont support !important
     this.state.isStreaming ?
@@ -53,34 +56,40 @@ class SearchPage extends Component {
     : null
   )
 
+  renderSearchBar = () => (
+    <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
+    onChange={({target: {value: search}}) => this.setState({search})}>
+      {this.renderStopButton()}
+      <input />
+      <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
+        <Button primary size='massive' icon='search' onClick={this.search}/>
+      </Link>       
+    </Input>
+  )
+
   //must use defined function property. inline function in render causes infinte loops for some reason
   setStickyRef = stickyRef => this.setState({stickyRef})
 
   //todo give background credit <a href="https://www.freevector.com/free-cartoon-clouds-vector-19875">FreeVector.com</a>
   render() {
-    const style = {
+    const background = {
       minHeight: '100vh', 
       backgroundImage: 'url("/clouds.svg")',
       backgroundSize: 'cover',
       backgroundAttachment: 'fixed'
     }
-    
+    const title = 'Search Live Tweets';
+
     return (
-      <div ref={this.setStickyRef} style={style}>
+      this.state.hasSearched ?
+      <div ref={this.setStickyRef} style={background}>
         <Grid container padded='vertically' columns={1} style={{backgroundColor: 'white'}}>
           <Grid.Column style={{paddingBottom: 0}}>
-            <Header text='Search Live Tweets' image='/blueBirdCrop.png' />
+            <TitleHeader text={title} image='/smallBird.png' />
           </Grid.Column>
           <Grid.Column style={{paddingTop: 0}}>
             <Sticky context={this.state.stickyRef} className='sticky'>
-              <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.search}
-              onChange={({target: {value: search}}) => this.setState({search})}>
-                {this.renderStopButton()}
-                <input />
-                <Link to={{pathname: '/', search: '?search=' + this.state.search}}>
-                  <Button primary size='massive' icon='search' onClick={this.search}/>
-                </Link>       
-              </Input>
+              {this.renderSearchBar()}
             </Sticky>
           </Grid.Column>
           <Grid.Column>
@@ -88,6 +97,16 @@ class SearchPage extends Component {
           </Grid.Column>
         </Grid>
       </div>
+      :
+      <Grid verticalAlign='middle' style={background}>
+        <Grid.Column width={5} style={{paddingRight: 0}}>
+          <Image src='/bigBird.png'/>
+        </Grid.Column>
+        <Grid.Column width={7} style={{paddingLeft: 0, paddingBottom: '9em'}}>
+          <h1 style={{color: 'white', fontSize:'5em'}}>{title}</h1>
+          {this.renderSearchBar()}
+        </Grid.Column>
+      </Grid>
     );
   }
 }
