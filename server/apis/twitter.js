@@ -31,6 +31,7 @@ export const enableTwitterStream = socket => {
       twitter.untrackAll();
     });
 
+    //todo: figure how to avoid calling this on each connect, but still having access to client variable
     twitter.on('tweet', tweet => {
       console.log(tweet.id_str);
 
