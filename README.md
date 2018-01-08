@@ -44,18 +44,6 @@ to our express server within *client/package.json*
   }
 }
 ```
-
-### Production
-
-This app is not production ready. For example, the production run script still uses `babel-node`. That said, it is still
-possible to simulate a production build.
-
-```
-npm install
-npm build
-npm run serve
-```
-
 ## How I code
 
 Throughout the app, you will see notes in the form of comments. These are personal notes to you explaining my less
@@ -95,3 +83,4 @@ following server error.
 1. Support multiple clients simultaneously
 2. Input validation
 3. Prop types
+4. Create production build with `npm run build`
