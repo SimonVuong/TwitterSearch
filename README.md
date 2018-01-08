@@ -1,6 +1,6 @@
 # TwitterSearch
 
-Search tweets for a live feed. This is a small example of Simon's coding style and practices. This app uses an [express](https://github.com/expressjs/express) backend along with socket.io. The frontend was bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app) and 
+Search tweets for a live feed. This is a small example of Simon's coding style and practices. This app uses an [express](https://github.com/expressjs/express) backend along with [socket.io](https://github.com/socketio/socket.io). The frontend was bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app) and 
 uses [semantic-ui-react](https://github.com/Semantic-Org/Semantic-UI-React) for styling.
 
 ## Getting started
@@ -60,8 +60,8 @@ npm run serve
 
 Throughout the app, you will see notes in the form of comments. These are personal notes to you explaining my less
 obvious thought processes at that particular snippet of code. Because this project specifically serves as an evaluation
-tool, I documented them here to give you an idea of my decision making process. I would normally not include them in my
-other projects. All other comments (those not prefaced) with `note:`, would be included in my normal projects.
+tool, I documented them here to give you an idea of my decision making process. I would not normally include them in my
+other projects. All other comments (those not prefaced with `note:`) would be included in my normal projects.
 
 */client/src/general/reducers/socketReducer.js*
 
@@ -72,11 +72,11 @@ export default combineReducers({
 });
 ```
 
-Please keep in mind that this was an independent project. I am flexible when working with a team however.
+Please keep in mind that this was an independent project. I am flexible when working with a team.
 
 ## Known bugs
 
-1. Be aware of twitter-rate limits. Don't do too many saerches within a short period of time. if this happens. wait for 
+1. Be aware of twitter-rate limits. Don't do too many saerches within a short period of time. If this happens. wait for 
 a few minutes. See [here](https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/connecting.html).
 
 > Clients which do not implement backoff and attempt to reconnect as often as possible will have their connections rate limited for a small number of minutes. Rate limited clients will receive HTTP 420 responses for all connection requests.
@@ -86,10 +86,9 @@ Twitter does not make public the number of connection attempts which will cause 
 
 2. Sometimes the client will receive duplicate tweets with the same id. One possible solution to explore would be implementing [redis](https://github.com/antirez/redis) to cache tweets and prevent duplicate sends. To be honest, I'm not really sure why this error happens. However it may be related to the next bug. Temporarily fix by restarting browser or server.
 3. When searching for really popular terms such as "love" or "life" the browser will stop responding. While only a guess, it could be related to duplicate tweets or an inability to handle the volume of tweets. Temporarily fix by restarting server.
-4. Twitter streams are not properly closed/terminated. When a single browser reconnects multiple times then does a new
-search, the twitter 'tweet' even is fired multiple times per tweet, based on the number of reconnects. Temporarily fix
-by restarting server.
-
+4. When a single browser reconnects multiple times then does a new search, the twitter 'tweet' even is fired multiple 
+times per tweet, based on the number of reconnects. This could be due to impropper connection closing or multiple
+`twitter.on('tweet')...` calls. Temporarily fix by restarting server.
 
 ## Possible enhancements
 

@@ -9,8 +9,9 @@ const twitter = new TwitterApi({
 });
 
 //todo bug: handle twitter rate-limiting
-//todo bug: multiple reconnects creates event leaks. this is apparent when console.log(tweet.id_str) runs mulitple times
-//for a single browser
+//todo bug: multiple reconnects may creates event leaks. this is apparent when console.log(tweet.id_str) runs mulitple
+//for a single browser. alternatively, this could be due to multiple twitter.on('tweet') declarations. This issue still
+//needs to be explored.
 export const enableTwitterStream = socket => {
   socket.on('connection', client => {
     console.log('client connected');
