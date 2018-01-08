@@ -10,8 +10,9 @@ class SearchBar extends Component {
     this.props.history.push('/search?query=' + this.state.query);
   }
 
-  componentWillReceiveProps({query: nextQuery}) { 
-    if (nextQuery !== this.props.query) this.setState({query: nextQuery}) 
+  componentWillReceiveProps({query: newQuery}) { 
+    //we this component can receive a new query when SearchPage clicks the browser back button and changes url
+    if (newQuery !== this.props.query) this.setState({query: newQuery}) 
   }
 
   render () {
@@ -20,8 +21,8 @@ class SearchBar extends Component {
         <Input fluid action size='massive' placeholder='Search tweets...' value={this.state.query}
         onChange={(e, {value: query}) => this.setState({query})}>
           {this.props.inputLeft}
-          <input type='text' />
-          <Button primary size='massive' icon='search' />
+          <input type='text' /> {/*when using boolean action prop in Input, semantic requiresthis placeholder*/}
+          <Button primary size='massive' icon='search' type='submit' />
         </Input>
       </Form>
     )

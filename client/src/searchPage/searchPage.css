@@ -4,7 +4,8 @@
   padding-right: 1em !important;
 }
 
-/* necessary to give the sticky div styles. otherwise, we can't target the sticky */
+/* necessary to give the sticky div styles. otherwise, we can't target the sticky. nth-child(2) because semantic sticky
+adds an empty 1st div inside the sticky container */
 .sticky > div:nth-child(2) {
   z-index: 1; /* needed to place sticky above the tweets*/
   padding-top: 2em;

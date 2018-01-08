@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button, Icon, Sticky, Image, Header} from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Image, Sticky } from 'semantic-ui-react';
 import queryString from 'query-string';
 import TweetsList from './TweetsList';
 import SearchBar from '../general/components/SearchBar';
@@ -35,6 +35,7 @@ class SearchPage extends Component {
 
   search = (newQuery) => {
     if (!newQuery) return;
+
     const { socket } = this.props
     let newState = {currQuery: newQuery};
     this.state.isStreaming ? socket.emit('stopTweets', this.state.currQuery) : newState.isStreaming = true;

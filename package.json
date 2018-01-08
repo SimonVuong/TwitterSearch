@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "serve": "babel-node --presets es2015,stage-0 -- server/server.js",
+    "build": "cd client && npm build",
     "start-server": "nodemon server/server.js --exec babel-node --presets es2015,stage-0",
     "start-client": "cd client && npm start",
     "start": "run-p start-server start-client"

@@ -3,7 +3,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import store from './store';
 import SearchPage from './searchPage/SearchPage';
-import HomePage from './homePage/HomePage'
+import HomePage from './homePage/HomePage';
+
 export default class App extends Component {
   render () {
     return (

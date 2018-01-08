@@ -1,5 +1,20 @@
-/* reserved for app specific css. semantic css is reserved for themeing and  */
+/* reserved for app specific css. semantic file changes are reserved for themeing and semantic specific overrides */
+/*note: for such theme change see /client/semantic/site/globals/site.variables/*
 
+/*
+note:
+
+I use inline styles when the style is specific to the component. I prefer inline styles in these cases I can see all my
+specific component styles in the same place that I need them. This way, I don't have to jump to another file and cross
+match between selectors and class names.
+
+Sometimes though, there are styles that apply to multiple components. In these cases, I do use class names. I choose css 
+classes for these kinds of style stead of expriting react style objects because...
+
+1) CSS "are generally more efficient than inline styles" (from https://reactjs.org/docs/faq-styling.html).
+2) Since I already have to go to a different file to view styles I want to choose the more efficient method.
+
+*/
 .cloudsBackground {
   min-height: 100vh;
   background-image: url(/clouds.svg);

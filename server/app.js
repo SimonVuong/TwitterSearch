@@ -20,17 +20,17 @@ if (env !== 'development') {
   app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html')));
 }
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = env === 'development' ? err : {};
 
   // send the error page
   res.status(err.status || 500);

@@ -1,56 +1,97 @@
-decisions:
+# TwitterSearch
 
+Search tweets for a live feed. This is a small example of Simon's coding style and practices. This app uses an [express](https://github.com/expressjs/express) backend along with socket.io. The frontend was bootstrapped with [create-react-app](https://github.com/facebookincubator/create-react-app) and 
+uses [semantic-ui-react](https://github.com/Semantic-Org/Semantic-UI-React) for styling.
 
-src folder because i create react app needs a src folder. i originally wanted to do client folder isntead but not possible.
-i was going to put src inside client but i wanted build to be top level instead of nested inside client
+## Getting started
 
-must have semantic folder inside source instead of client toplevel otherwise, react cannot import it. limitation
-by cra
+Globally install [nodemon](https://github.com/remy/nodemon) and  [gulp](https://gulpjs.com/) for server watching and
+semantic-ui builds respectively.
 
+```
+npm i nodemon -g
+npm i gulp -g
+```
 
-i left a lot of comments explaining my thought processes that may not be so obvious. these are rules and patterns that
-i like to follow and incorporate in all my projects. i am flexible when working with a team however
+Install server and client dependencies.
 
-be aware of twitter-rate limits. dont do too many saerches within a short period of time. if this happens. wait for a
-few minutes. see
+```
+npm install
+cd client
+npm install
+```
 
-https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/connecting.html
-Clients which do not implement backoff and attempt to reconnect as often as possible will have their connections rate limited for a small number of minutes. Rate limited clients will receive HTTP 420 responses for all connection requests.
-Clients which break a connection and then reconnect frequently (to change query parameters, for example) run the risk of being rate limited.
+To start the server and client at the same time, return to project top level folder.
+
+```
+npm start
+```
+
+Good search terms include 'food', 'eat', 'basketball', and 'football'. Searches such as 'love' will create a feed that
+is too fast and will cause the browser to be unresponsive. See below for more known bugs.
+### Development
+
+In development we run the backend Express server and frontend server separately. We proxy our webpack development server
+to our express server within *client/package.json*
+
+``` 
+"proxy": {
+  "/api": {
+    "target": "http://localhost:8080"
+  },
+  "/socket.io": {
+    "target": "ws://localhost:8080"
+  }
+}
+```
+
+### Production
+
+This app is not production ready. For example, the production run script still uses `babel-node`. That said, it is still
+possible to simulate a production build.
+
+```
+npm install
+npm build
+npm run serve
+```
+
+## How I code
+
+Throughout the app, you will see notes in the form of comments. These are personal notes to you explaining my less
+obvious thought processes at that particular snippet of code. Because this project specifically serves as an evaluation
+tool, I documented them here to give you an idea of my decision making process. I would normally not include them in my
+other projects. All other comments (those not prefaced) with `note:`, would be included in my normal projects.
+
+*/client/src/general/reducers/socketReducer.js*
+
+```
+export default combineReducers({
+  //note: put socket into redux store since it should be accessable throughout entire app  
+  socket
+});
+```
+
+Please keep in mind that this was an independent project. I am flexible when working with a team however.
+
+## Known bugs
+
+1. Be aware of twitter-rate limits. Don't do too many saerches within a short period of time. if this happens. wait for 
+a few minutes. See [here](https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/connecting.html).
+
+> Clients which do not implement backoff and attempt to reconnect as often as possible will have their connections rate limited for a small number of minutes. Rate limited clients will receive HTTP 420 responses for all connection requests.
+
+>Clients which break a connection and then reconnect frequently (to change query parameters, for example) run the risk of being rate limited.
 Twitter does not make public the number of connection attempts which will cause a rate limiting to occur, but there is some tolerance for testing and development. A few dozen connection attempts from time to time will not trigger a limit. However, it is essential to stop further connection attempts for a few minutes if a HTTP 420 response is received. If your client is rate limited frequently, it is possible that your IP will be blocked from accessing Twitter for an indeterminate period of time.
 
-run locally
-
-npm start 
-npm serve
-
-
-features
-input validatioon
-makesure i can search with enter button
-
-shortcuts
-npm run serve = babel-node but fast and easy for poc
-
-css variables and settings are set in 
-\client\src\semantic\src\site\globals\site.variables
-
-if you change one while the program is running, it auto recompiles
-
-i prefer inline styles when the style is specific to the component. id ont have to jump to anotiher file, then cross match
-selectors and classnames. i can see eveyrthign there. sometimes though, there are styles that apply to multiple components
-at which case i do use class names. i choose css for these kinds of style isntead of export react style objects because
-
-1) css "are generally more efficient than inline styles" (from https://reactjs.org/docs/faq-styling.html)
-2) i already have to go to a different file anyway so i might as well use className
-
-i reserve app.css for such styles and leave semantic for theming and semantic specific
-overrides.
-
-coding style: i do my best to be consistent. but at the end of the day, i write the sttyle i choose to be most readable.
-again im flexible in a team
+2. Sometimes the client will receive duplicate tweets with the same id. One possible solution to explore would be implementing [redis](https://github.com/antirez/redis) to cache tweets and prevent duplicate sends. To be honest, I'm not really sure why this error happens. However it may be related to the next bug. Temporarily fix by restarting browser or server.
+3. When searching for really popular terms such as "love" or "life" the browser will stop responding. While only a guess, it could be related to duplicate tweets or an inability to handle the volume of tweets. Temporarily fix by restarting server.
+4. Twitter streams are not properly closed/terminated. When a single browser reconnects multiple times then does a new
+search, the twitter 'tweet' even is fired multiple times per tweet, based on the number of reconnects. Temporarily fix
+by restarting server.
 
 
-known errors: dupes. rarely, twitter will send dupe tweets which causes the react list to spit warnings. can be
-fixed by redis on backend but we are focusing on front end for this assignment and rate limiting. avoid
-queries that stream too fast such as "love" or "life"
+## Possible enhancements
+
+1. Input validation
+2. Prop types

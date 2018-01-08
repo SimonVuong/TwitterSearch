@@ -8,9 +8,13 @@ const twitter = new TwitterApi({
   token_secret: 'KRc3oQbzzJCAr9YE4Qzh4BcUjzPgEtpGmsYKQ2NLNCqLl'
 });
 
+//todo bug: handle twitter rate-limiting
+//todo bug: multiple reconnects creates event leaks. this is apparent when console.log(tweet.id_str) runs mulitple times
+//for a single browser
 export const enableTwitterStream = socket => {
   socket.on('connection', client => {
-    console.log('client connected', )
+    console.log('client connected');
+
     client.on('getTweets', query => {
       console.log('tracking', query);
       twitter.track(query);
@@ -24,12 +28,11 @@ export const enableTwitterStream = socket => {
     client.on('disconnect', () => {
       console.log('client disconnected');
       twitter.untrackAll();
-      twitter.abort();
     });
 
     twitter.on('tweet', tweet => {
       console.log(tweet.id_str);
-      //todo if we stream "love"  the socket can't handle the traffic....
+
       client.emit('newTweet', {
         id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
         timestamp: tweet.timestamp,
