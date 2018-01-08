@@ -23,9 +23,9 @@ class SearchPage extends Component {
   componentWillUnmount () { this.props.socket.emit('stopTweets', this.state.currQuery) }
 
   componentWillReceiveProps({location: nextLocation}) {
-    if (this.getRouteQuery(nextLocation) !== this.getRouteQuery(this.props.location)) {
-      this.search(this.getRouteQuery(nextLocation));
-    }
+    //intentionally checking objects. we want to know if this is a new location, whether the path is the same or not.
+    //we have a location with the same path if SearchPage is currently streaming and we search the same query
+    if (nextLocation !== this.props.location) this.search(this.getRouteQuery(nextLocation));
   }
 
   getRouteQuery = location => queryString.parse(location.search).query;

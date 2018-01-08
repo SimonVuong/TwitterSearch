@@ -5,14 +5,15 @@ import { withRouter } from 'react-router-dom'
 class SearchBar extends Component {
   state = { query: this.props.query || '' };
 
+  componentWillReceiveProps({query: newQuery}) { 
+    //we this component can receive a new query when SearchPage clicks the browser back button and changes url
+    //we set query state to keep it in sync with the url
+    if (newQuery !== this.props.query) this.setState({query: newQuery}) 
+  }
+
   onSubmit = (event) => {
     event.preventDefault();
     this.props.history.push('/search?query=' + this.state.query);
-  }
-
-  componentWillReceiveProps({query: newQuery}) { 
-    //we this component can receive a new query when SearchPage clicks the browser back button and changes url
-    if (newQuery !== this.props.query) this.setState({query: newQuery}) 
   }
 
   render () {

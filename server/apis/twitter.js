@@ -8,43 +8,51 @@ const twitter = new TwitterApi({
   token_secret: 'KRc3oQbzzJCAr9YE4Qzh4BcUjzPgEtpGmsYKQ2NLNCqLl'
 });
 
-//todo bug: handle twitter rate-limiting
-//todo bug: multiple reconnects may creates event leaks. this is apparent when console.log(tweet.id_str) runs mulitple
-//for a single browser. alternatively, this could be due to multiple twitter.on('tweet') declarations. This issue still
-//needs to be explored.
+//todo support multiple clients
+let singleClient = null;
+
 export const enableTwitterStream = socket => {
+  //todo bug: handle twitter rate-limiting
+  //todo bug: multiple reconnects may creates event leaks. this is apparent when console.log(tweet.id_str) runs mulitple
+  //for a single browser. alternatively, this could be due to multiple twitter.on('tweet') declarations. This issue still
+  //needs to be explored.
   socket.on('connection', client => {
     console.log('client connected');
-
+    
     client.on('getTweets', query => {
       console.log('tracking', query);
       twitter.track(query);
     });
-
+  
     client.on('stopTweets', query => {
       console.log('untracked', query);
       twitter.untrack(query);
     })
-
+  
     client.on('disconnect', () => {
       console.log('client disconnected');
       twitter.untrackAll();
+      singleClient = null;
     });
 
-    //todo: figure how to avoid calling this on each connect, but still having access to client variable
-    twitter.on('tweet', tweet => {
-      console.log(tweet.id_str);
-
-      client.emit('newTweet', {
-        id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
-        timestamp: tweet.timestamp,
-        text: tweet.text,
-        username: tweet.user.screen_name,
-        avatar: tweet.user.profile_image_url,
-        // location: tweet.place.full_name
-      });
-    })
-
-    twitter.on('error', err => console.err('got twitter error', err))
-  });
+    singleClient = client;
+  }); 
 }
+
+//todo: figure how to avoid calling this on each connect, but still having access to client variable
+twitter.on('tweet', tweet => {
+  if (singleClient == null) return;
+  console.log(tweet.id_str + ' for ' + singleClient.id);
+  singleClient.emit('newTweet', {
+    id: tweet.id_str, //using str as recommended by twitter api. numbers too large may cause bugs in js
+    timestamp: tweet.timestamp,
+    text: tweet.text,
+    username: tweet.user.screen_name,
+    avatar: tweet.user.profile_image_url,
+    // location: tweet.place.full_name
+  });
+
+
+})
+
+twitter.on('error', err => console.err('got twitter error', err))

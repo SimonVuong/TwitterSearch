@@ -6,6 +6,13 @@ import SearchPage from './searchPage/SearchPage';
 import HomePage from './homePage/HomePage';
 
 export default class App extends Component {
+
+  componentDidMount () {
+    window.addEventListener("beforeunload", (e) => {
+      store.getState().socket.close();  
+    });
+  }
+
   render () {
     return (
       <Provider store={store}>

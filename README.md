@@ -84,13 +84,14 @@ a few minutes. See [here](https://developer.twitter.com/en/docs/tweets/filter-re
 >Clients which break a connection and then reconnect frequently (to change query parameters, for example) run the risk of being rate limited.
 Twitter does not make public the number of connection attempts which will cause a rate limiting to occur, but there is some tolerance for testing and development. A few dozen connection attempts from time to time will not trigger a limit. However, it is essential to stop further connection attempts for a few minutes if a HTTP 420 response is received. If your client is rate limited frequently, it is possible that your IP will be blocked from accessing Twitter for an indeterminate period of time.
 
-2. Sometimes the client will receive duplicate tweets with the same id. One possible solution to explore would be implementing [redis](https://github.com/antirez/redis) to cache tweets and prevent duplicate sends. To be honest, I'm not really sure why this error happens. However it may be related to the next bug. Temporarily fix by restarting browser or server.
-3. When searching for really popular terms such as "love" or "life" the browser will stop responding. While only a guess, it could be related to duplicate tweets or an inability to handle the volume of tweets. Temporarily fix by restarting server.
-4. When a single browser reconnects multiple times then does a new search, the twitter 'tweet' even is fired multiple 
-times per tweet, based on the number of reconnects. This could be due to impropper connection closing or multiple
-`twitter.on('tweet')...` calls. Temporarily fix by restarting server.
+2. Sometimes the client will receive duplicate tweets with the same id. It is potentially due to impropper socket/twitter connection closing, but requires further investigation. Temporarily fix by restarting server.
+ This error is usually associated with the
+following server error.
+>(node:4784) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 error listeners added. Use emitter.setMaxListeners() to increase limit
+
+3. When searching for really popular terms such as "love" or "life" the browser will stop responding due to high traffic. Temporarily fix by restarting server.
 
 ## Possible enhancements
-
-1. Input validation
-2. Prop types
+1. Support multiple clients simultaneously
+2. Input validation
+3. Prop types
