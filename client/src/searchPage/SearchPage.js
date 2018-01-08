@@ -34,6 +34,7 @@ class SearchPage extends Component {
   setStickyRef = stickyRef => this.setState({stickyRef})
 
   search = (newQuery) => {
+    console.log('going to search', newQuery); //for debugging
     if (!newQuery) return;
 
     const { socket } = this.props

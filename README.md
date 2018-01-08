@@ -16,9 +16,9 @@ npm i gulp -g
 Install server and client dependencies.
 
 ```
-npm install
+npm i
 cd client
-npm install
+npm i
 ```
 
 To start the server and client at the same time, return to project top level folder.
@@ -76,7 +76,7 @@ Please keep in mind that this was an independent project. I am flexible when wor
 
 ## Known bugs
 
-1. Be aware of twitter-rate limits. Don't do too many saerches within a short period of time. If this happens. wait for 
+1. Be aware of twitter-rate limits. Don't do too many searches within a short period of time. If this happens. wait for 
 a few minutes. See [here](https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/connecting.html).
 
 > Clients which do not implement backoff and attempt to reconnect as often as possible will have their connections rate limited for a small number of minutes. Rate limited clients will receive HTTP 420 responses for all connection requests.
@@ -84,8 +84,8 @@ a few minutes. See [here](https://developer.twitter.com/en/docs/tweets/filter-re
 >Clients which break a connection and then reconnect frequently (to change query parameters, for example) run the risk of being rate limited.
 Twitter does not make public the number of connection attempts which will cause a rate limiting to occur, but there is some tolerance for testing and development. A few dozen connection attempts from time to time will not trigger a limit. However, it is essential to stop further connection attempts for a few minutes if a HTTP 420 response is received. If your client is rate limited frequently, it is possible that your IP will be blocked from accessing Twitter for an indeterminate period of time.
 
-2. Sometimes the client will receive duplicate tweets with the same id. It is potentially due to impropper socket/twitter connection closing, but requires further investigation. Temporarily fix by restarting server.
- This error is usually associated with the
+2. Sometimes the client will receive duplicate tweets with the same id,causing the browser to become unresponsive. It is potentially due to impropper socket/twitter connection closing, but requires further investigation. Temporarily fix by restarting server.
+ This error is sometimes associated with the
 following server error.
 >(node:4784) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 error listeners added. Use emitter.setMaxListeners() to increase limit
 
